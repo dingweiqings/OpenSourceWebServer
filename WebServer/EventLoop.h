@@ -14,19 +14,26 @@
 
 #include <iostream>
 using namespace std;
-
+/**
+ * @brief 事件循环器，下面使用epoll来实现，还有一些队列的处理
+ * 
+ */
 class EventLoop {
  public:
   typedef std::function<void()> Functor;
   EventLoop();
   ~EventLoop();
+  //时间循环，poller,也是subreactor
   void loop();
+  
   void quit();
   void runInLoop(Functor&& cb);
   void queueInLoop(Functor&& cb);
   bool isInLoopThread() const { return threadId_ == CurrentThread::tid(); }
   void assertInLoopThread() { assert(isInLoopThread()); }
   void shutdown(shared_ptr<Channel> channel) { shutDownWR(channel->getFd()); }
+
+
   void removeFromPoller(shared_ptr<Channel> channel) {
     // shutDownWR(channel->getFd());
     poller_->epoll_del(channel);
@@ -41,6 +48,7 @@ class EventLoop {
  private:
   // 声明顺序 wakeupFd_ > pwakeupChannel_
   bool looping_;
+  //Epoll的包装类
   shared_ptr<Epoll> poller_;
   int wakeupFd_;
   bool quit_;

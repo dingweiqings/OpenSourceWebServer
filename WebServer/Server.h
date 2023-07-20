@@ -5,7 +5,10 @@
 #include "Channel.h"
 #include "EventLoop.h"
 #include "EventLoopThreadPool.h"
-
+/**
+ * @brief server 包装类
+ * 
+ */
 class Server {
  public:
   Server(EventLoop *loop, int threadNum, int port);
@@ -16,11 +19,17 @@ class Server {
   void handThisConn() { loop_->updatePoller(acceptChannel_); }
 
  private:
+ //主线程事件轮询,和accept Channel_关联
   EventLoop *loop_;
+
   int threadNum_;
+
   std::unique_ptr<EventLoopThreadPool> eventLoopThreadPool_;
+
   bool started_;
+  //main reactor
   std::shared_ptr<Channel> acceptChannel_;
+
   int port_;
   int listenFd_;
   static const int MAXFDS = 100000;

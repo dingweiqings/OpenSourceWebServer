@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[]) {
   int threadNum = 4;
-  int port = 80;
+  int port = 8085;
   std::string logPath = "./WebServer.log";
 
   // parse args
@@ -37,14 +37,19 @@ int main(int argc, char *argv[]) {
         break;
     }
   }
+  
   Logger::setLogFileName(logPath);
 // STL库在多线程上应用
 #ifndef _PTHREADS
   LOG << "_PTHREADS is not defined !";
 #endif
+  //创建Eventloop
   EventLoop mainLoop;
+  //创建Server
   Server myHTTPServer(&mainLoop, threadNum, port);
+  //启动server
   myHTTPServer.start();
+  //main线程运行，防止main退出
   mainLoop.loop();
   return 0;
 }

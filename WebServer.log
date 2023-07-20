@@ -1,0 +1,11 @@
+2022-09-02 18:03:44
+New connection from 127.0.0.1:53348 -- /my_project/WebServer/WebServer/Server.cpp:45
+2022-09-02 18:04:32
+New connection from 127.0.0.1:53350 -- /my_project/WebServer/WebServer/Server.cpp:45
+2022-09-02 18:04:32
+Request: GET / HTTP/1.1
+Host: localhost:8085
+User-Agent: curl/7.68.0
+Accept: */*
+
+ -- /my_project/WebServer/WebServer/HttpData.cpp:160

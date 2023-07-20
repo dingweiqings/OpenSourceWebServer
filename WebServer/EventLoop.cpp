@@ -36,9 +36,15 @@ EventLoop::EventLoop()
     t_loopInThisThread = this;
   }
   // pwakeupChannel_->setEvents(EPOLLIN | EPOLLET | EPOLLONESHOT);
+
   pwakeupChannel_->setEvents(EPOLLIN | EPOLLET);
+
+  //wakeup channel
   pwakeupChannel_->setReadHandler(bind(&EventLoop::handleRead, this));
+
+
   pwakeupChannel_->setConnHandler(bind(&EventLoop::handleConn, this));
+
   poller_->epoll_add(pwakeupChannel_, 0);
 }
 
@@ -99,8 +105,10 @@ void EventLoop::loop() {
   while (!quit_) {
     // cout << "doing" << endl;
     ret.clear();
+    //epoll ，io轮询
     ret = poller_->poll();
     eventHandling_ = true;
+    //处理读写事件，交由channel来处理具体的业务，epoll只负责轮询
     for (auto& it : ret) it->handleEvents();
     eventHandling_ = false;
     doPendingFunctors();

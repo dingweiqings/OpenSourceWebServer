@@ -11,7 +11,10 @@
 
 class EventLoop;
 class HttpData;
-
+/**
+ * @brief 和客户端通信的包装类，和会和一个事件循环关联
+ * 
+ */
 class Channel {
  private:
   typedef std::function<void()> CallBack;
